@@ -1,0 +1,63 @@
+import { StyleSheet } from "react-native";
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    backgroundColor: "#0d1117",
+    paddingTop: 15,
+  },
+  title: { fontSize: 20, fontWeight: "bold", marginTop: 10, color: "#fff" },
+  btnOpenModal: {
+    backgroundColor: "#61dafb",
+    width: 40,
+    height: 40,
+    borderRadius: 40,
+    alignItems: "center",
+    justifyContent: "center",
+    position: "absolute",
+    top: 20,
+    right: 20,
+  },
+  modalBtnBack: {
+    width: 40,
+    height: 40,
+    borderRadius: 40,
+    alignItems: "center",
+    justifyContent: "center",
+    position: "absolute",
+    top: 20,
+    left: 20,
+  },
+  inputs: {
+    backgroundColor: "#fff",
+    width: 300,
+    height: 40,
+    borderRadius: 5,
+    paddingLeft: 10,
+    marginTop: 15,
+  },
+  btnAddProduct: {
+    backgroundColor: "#61dafb",
+    width: 150,
+    height: 50,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: 20,
+  },
+  textAddProduct: { fontWeight: "bold", color: "#fff" },
+  total: {
+    alignItems: "center",
+    justifyContent: "center",
+    position: "absolute",
+    backgroundColor: "green",
+    bottom: 10,
+    right: 10,
+    width: 200,
+    height: 50,
+    borderRadius: 5,
+  },
+  btnDeleteAllProducts: { position: "absolute", left: 20, top: 20 },
+});
+export default styles;
