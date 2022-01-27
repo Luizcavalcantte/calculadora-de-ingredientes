@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
 import {
   View,
   Text,
@@ -30,24 +30,73 @@ export default function App() {
 
   const [products, setProducts] = useState([]);
 
+  const [totalUsed, setTotalUsed] = useState("");
+  const [weightTotalUsed, setWeightTotalUsed] = useState("");
+
+  useEffect(() => {
+    async function loadIngredients() {
+      const ingredientsStorag = await AsyncStorage.getItem("ingredients");
+
+      if (ingredientsStorag) {
+        setProducts(JSON.parse(ingredientsStorag));
+      }
+    }
+    loadIngredients();
+  }, []);
+
+  useEffect(() => {
+    async function saveIngredients() {
+      await AsyncStorage.setItem("ingredients", JSON.stringify(products));
+    }
+    saveIngredients();
+  }, [products]);
+
+  useEffect(() => {
+    setTotalUsed(
+      products
+        //reduce funciona da seguinte maneira: recebe uma function que precisa de dois parametros(valor inicial que vai acomular o resultado , o item a ser processado)=> valorInicial + products.valueUsed, o valor q iniciaremos no nosso acomulador
+        .reduce((initialVal, products) => initialVal + products.valueUsed, 0)
+        .toFixed(2)
+    );
+    setWeightTotalUsed(
+      products
+        //reduce funciona da seguinte maneira: recebe uma function que precisa de dois parametros(valor inicial que vai acomular o resultado , o item a ser processado)=> valorInicial + products.valueUsed, o valor q iniciaremos no nosso acomulador
+        .reduce(
+          (initialVal, products) =>
+            initialVal + parseFloat(products.weightUsed),
+          0
+        )
+    );
+  }, [products]);
+
   function addProduct() {
-    const product = {
-      key: ingredientInput,
-      name: ingredientInput,
-      totalWeight: productWeightInput,
-      weightUsed: weightUsedInput,
-      value: productValueInput,
-      valueUsed: (weightUsedInput * productValueInput) / productWeightInput,
-    };
-    setProducts([...products, product]);
-    setOpenModal(false);
+    if (
+      ingredientInput !== "" &&
+      productWeightInput !== "" &&
+      weightUsedInput !== "" &&
+      productValueInput !== ""
+    ) {
+      const product = {
+        key: ingredientInput,
+        name: ingredientInput,
+        totalWeight: productWeightInput,
+        weightUsed: weightUsedInput,
+        //.replace(valor esperado indesejado , valor desejado)
+        value: productValueInput.replace(",", "."),
+        valueUsed:
+          (weightUsedInput * productValueInput.replace(",", ".")) /
+          productWeightInput,
+      };
+      setProducts([...products, product]);
+      setOpenModal(false);
 
-    setIngredientInput("");
-    setProductWeightInput("");
-    setWeightUsedInput("");
-    setProductValueInput("");
-
-    console.log(products);
+      setIngredientInput("");
+      setProductWeightInput("");
+      setWeightUsedInput("");
+      setProductValueInput("");
+    } else {
+      Alert.alert("Todos os campos precisam estar preenchidos");
+    }
   }
 
   const deleteProduct = useCallback((data) => {
@@ -73,7 +122,7 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar backgroundColor="#0d1117" />
+      <StatusBar barStyle="dark-content" backgroundColor="#eee7dd" />
       <MaterialCommunityIcons
         onPress={deleteAllProducts}
         style={styles.btnDeleteAllProducts}
@@ -81,9 +130,7 @@ export default function App() {
         size={35}
         color="#f63737"
       />
-      <View>
-        <Text style={styles.title}>Meus ingredientes</Text>
-      </View>
+
       <TouchableOpacity
         style={styles.btnOpenModal}
         onPress={() => {
@@ -92,8 +139,10 @@ export default function App() {
       >
         <AntDesign name="plus" size={24} color="#fff" />
       </TouchableOpacity>
+      <Text style={styles.title}>Meus ingredientes</Text>
       <FlatList
-        showsHorizontalScrollIndicator="false"
+        contentContainerStyle={{ paddingBottom: 70 }}
+        showsVerticalScrollIndicator={false}
         data={products}
         // keyExtractor precisa receber o dado em forma de string
         keyExtractor={(item) => String(item.key)}
@@ -110,11 +159,20 @@ export default function App() {
             onPress={() => setOpenModal(false)}
             style={styles.modalBtnBack}
           >
-            <Ionicons name="md-arrow-back" size={40} color="#fff" />
+            <Ionicons name="md-arrow-back" size={40} color="black" />
           </TouchableOpacity>
 
           <View>
-            <Text style={styles.title}>Novo Produto</Text>
+            <Text
+              style={{
+                marginTop: 50,
+                color: "black",
+                fontSize: 20,
+                fontWeight: "bold",
+              }}
+            >
+              Novo Produto
+            </Text>
           </View>
           <View useNativeDriver style={{ alignItems: "center" }}>
             <View>
@@ -150,7 +208,7 @@ export default function App() {
                 style={styles.inputs}
                 placeholderTextColor="#747474"
                 autoCorrect={false}
-                placeholder="Valor do Produto"
+                placeholder="Valor do Produto (R$)"
                 onChangeText={(text) => setProductValueInput(text)}
               />
             </View>
@@ -162,7 +220,8 @@ export default function App() {
         </SafeAreaView>
       </Modal>
       <View style={styles.total}>
-        <Text>Total = Valor</Text>
+        <Text>Total = {totalUsed}R$</Text>
+        <Text>Peso Aproximado = {weightTotalUsed}g</Text>
       </View>
     </SafeAreaView>
   );

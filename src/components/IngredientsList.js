@@ -15,7 +15,6 @@ export default function IngredientsList({ data, deleteProduct }) {
       <TouchableOpacity
         onPress={() => {
           deleteProduct(data);
-          console.log(data.key);
         }}
       >
         <MaterialIcons name="delete" size={30} color={"#121212"} />
@@ -27,12 +26,20 @@ export default function IngredientsList({ data, deleteProduct }) {
 const styles = StyleSheet.create({
   container: {
     width: 300,
-    marginTop: 20,
+    marginHorizontal: 20,
+    margin: 10,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     backgroundColor: "#fff",
     borderRadius: 5,
     padding: 7,
+    elevation: 5,
+    shadowColor: "#000",
+    shadowOpacity: 0.2,
+    shadowOffset: {
+      width: 1,
+      height: 3,
+    },
   },
 });
