@@ -122,14 +122,24 @@ export default function App() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <StatusBar barStyle="dark-content" backgroundColor="#eee7dd" />
-      <MaterialCommunityIcons
-        onPress={deleteAllProducts}
-        style={styles.btnDeleteAllProducts}
-        name="delete-forever-outline"
-        size={35}
-        color="#f63737"
-      />
+      <StatusBar barStyle="dark-content" backgroundColor="#00a884" />
+      <View
+        style={{
+          backgroundColor: "#00a884",
+          width: "100%",
+          height: 50,
+          alignItems: "center",
+        }}
+      >
+        <Text style={styles.title}>Meus ingredientes</Text>
+        <MaterialCommunityIcons
+          onPress={deleteAllProducts}
+          style={styles.btnDeleteAllProducts}
+          name="delete-forever-outline"
+          size={35}
+          color="#ff7d7d"
+        />
+      </View>
 
       <TouchableOpacity
         style={styles.btnOpenModal}
@@ -139,7 +149,7 @@ export default function App() {
       >
         <AntDesign name="plus" size={24} color="#fff" />
       </TouchableOpacity>
-      <Text style={styles.title}>Meus ingredientes</Text>
+
       <FlatList
         contentContainerStyle={{ paddingBottom: 70 }}
         showsVerticalScrollIndicator={false}
@@ -155,25 +165,23 @@ export default function App() {
       />
       <Modal animationType="slide" visible={openModal}>
         <SafeAreaView style={styles.container}>
-          <TouchableOpacity
-            onPress={() => setOpenModal(false)}
-            style={styles.modalBtnBack}
+          <View
+            style={{
+              backgroundColor: "#00a884",
+              width: "100%",
+              height: 50,
+              alignItems: "center",
+            }}
           >
-            <Ionicons name="md-arrow-back" size={40} color="black" />
-          </TouchableOpacity>
-
-          <View>
-            <Text
-              style={{
-                marginTop: 50,
-                color: "black",
-                fontSize: 20,
-                fontWeight: "bold",
-              }}
+            <TouchableOpacity
+              onPress={() => setOpenModal(false)}
+              style={styles.modalBtnBack}
             >
-              Novo Produto
-            </Text>
+              <Ionicons name="md-arrow-back" size={40} color="#fff" />
+            </TouchableOpacity>
+            <Text style={styles.title}>Novo Produto</Text>
           </View>
+
           <View useNativeDriver style={{ alignItems: "center" }}>
             <View>
               <TextInput

@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { backgroundColor } from "react-native/Libraries/Components/View/ReactNativeStyleAttributes";
 
 const styles = StyleSheet.create({
   container: {
@@ -6,7 +7,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#eee7dd",
   },
-  title: { fontSize: 20, fontWeight: "bold", marginTop: 10, color: "#000" },
+  title: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginTop: 10,
+    color: "#fff",
+  },
   btnOpenModal: {
     zIndex: 9,
     backgroundColor: "#00a884",
@@ -33,7 +39,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     position: "absolute",
-    top: 10,
+    top: 5,
     left: 10,
   },
   inputs: {
@@ -79,7 +85,14 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 5,
     zIndex: 9,
+    elevation: 5,
+    shadowColor: "#000",
+    shadowOpacity: 0.2,
+    shadowOffset: {
+      width: 1,
+      height: 3,
+    },
   },
-  btnDeleteAllProducts: { zIndex: 9, position: "absolute", right: 10, top: 10 },
+  btnDeleteAllProducts: { zIndex: 9, position: "absolute", right: 10, top: 5 },
 });
 export default styles;
